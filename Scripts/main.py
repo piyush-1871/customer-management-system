@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import mysql.connector
 st.title("CUSTOMER MANAGEMENT SYSTEM")
 choice = st.sidebar.selectbox("My Menu", ("Home", "User", "Admin"))
@@ -23,5 +24,11 @@ elif(choice == 'Admin'):
         
     if(st.session_state['alogin']):
         st.write("Login Successfull!")
-                    
+        choice2 = st.selectbox("Features", ("None", "View All Customers", "Add New Customer", "Remove Customer", "Update Customer Details", "Record Transaction", "View Customer Transacation"))
+        if(choice2 == "View All Customers"):
+            mydb = mysql.connector.connect(host="localhost", user="root", password="Piyush@2002", database="cms")
+            df = pd.read_sql("select * from customers", mydb)
+            df_no_index = df.to_records(index=False)
+            #Display dataframe
+            st.dataframe(df_no_index)
                 
